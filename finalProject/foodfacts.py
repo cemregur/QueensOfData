@@ -4,7 +4,7 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 
-df_ = pd.read_excel("/Users/cemregur/Desktop/MiuulProje/new_spagetti.xlsx")
+df_ = pd.read_excel("/finalProject/new_spagetti.xlsx")
 df = df_.copy()
 
 df.head()
