@@ -108,7 +108,6 @@ ortak_sutunlar = set(veri_seti[0].columns)
 
 for df in veri_seti[1:]:
     ortak_sutunlar &= set(df.columns)
-df.head(10)
 
 my_list = list(ortak_sutunlar)
 
@@ -119,11 +118,76 @@ my_list = list(ortak_sutunlar)
 yeni_df = pd.concat([df[my_list] for df in veri_seti], ignore_index=False)
 
 #new dataframe exports as csv file
-yeni_df.to_csv("df_new.csv", sep=";",index=False, decimal=",")
+# yeni_df.to_csv("df_new_drop.csv", sep=";",index=False, decimal=",")
 
 # Calculation of missing value percentage
 missing_percentage = yeni_df.isnull().mean() * 100
 missing_percentage_sorted = missing_percentage.sort_values(ascending=False)
+mps = pd.DataFrame(missing_percentage_sorted, ignore_index=False)
+mps.reset_index().head()
+mps.to_csv("kayıp_gozlem.csv",sep=";", index = True,decimal=",")
 
-missing_percentage_sorted.to_csv("kayıp_gozlem.csv",sep=";", index = False)
+
+# Dataframe without missing values in nova groups variable
+filtered_df = yeni_df.dropna(subset=["off:nova_groups"])
+filtered_df.to_csv("data_last.csv",sep=";", index = True,decimal=",")
+
+filtered_df.shape
+#url variable
+
+# calculation of missing value (dropna Novascore)
+missing_percentage = filtered_df.isnull().mean() * 100
+missing_percentage_sorted = missing_percentage.sort_values(ascending=False)
+mps_new = pd.DataFrame(missing_percentage_sorted)
+mps_new.to_csv("kayıp_gozlem_new.csv",sep=";", index = True,decimal=",")
+
+#categori csv verisi
+
+category = filtered_df["Category_new"]
+
+category.to_csv("categori.csv", index = False)
+
+
+import requests
+import pandas as pd
+import os
+from urllib.parse import urlparse
+
+
+data = filtered_df["code"]
+#data.head()
+df = pd.DataFrame(data)
+#filtered_df["code"].head()
+
+image_urls = []
+
+for index, row in df.iterrows():
+    product_code = str(row['code'])
+
+
+    image_url = f'https://images.openfoodfacts.org/images/products/{product_code}/1.400.jpg'
+
+
+    if len(product_code) == 13:
+        # 13 haneli ürün kodunu "/" ile bölelim
+        code_parts = '/'.join([product_code[:3], product_code[3:6], product_code[6:9], product_code[9:13]])
+        image_urls.append(f'https://images.openfoodfacts.org/images/products/{code_parts}/1.400.jpg')
+    else:
+        image_urls.append(image_url)  # Diğer durumlarda doğrudan URL'yi ekleyin
+
+# image_urls listesini görüntüleyin
+for url in image_urls:
+    print(url)
+
+image_url = pd.DataFrame(image_urls, columns=['url'])
+image_url.to_csv("url.csv",sep=";", index = True )
+
+filtered_df["url"] = image_url["url"]
+
+filtered_df.iloc[:, filtered_df.columns.get_loc("url")] = image_urls
+
+filtered_df.to_csv("df_son.csv",sep=";", index = True,decimal=",")
+
+
+#dff = pd.read_csv("df_son.csv", sep=";", low_memory=False)
 
