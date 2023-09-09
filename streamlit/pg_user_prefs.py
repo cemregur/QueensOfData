@@ -22,7 +22,7 @@ def save_pref_values():
     st.session_state.pref_Allergen_Soybeans = int(st.session_state.chk_Allergen_Soybeans)
 
 def app():
-    local_css("style.css")
+
     with st.form(key="user_pref_form"):
         st.subheader("User Preferences")
         #####################################################################
@@ -122,6 +122,6 @@ def app():
         else:
             col3.checkbox("Soybeans", key="chk_Allergen_Soybeans", value = False)
         #####################################################################
-        st.form_submit_button("Save",on_click=save_pref_values, use_container_width=True, type="secondary")
+        st.form_submit_button("Save",on_click=save_pref_values, use_container_width=True, type="primary")
 
 

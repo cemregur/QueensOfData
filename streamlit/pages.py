@@ -5,6 +5,7 @@ import pg_search_product
 import pg_about
 import pg_user_prefs
 import pg_homepage
+import pg_test
 from Src.utils import *
 
 st.set_page_config(
@@ -17,6 +18,8 @@ st.set_page_config(
 def main():
     local_css("style.css")
     st.header("Safe Food for Everyone")
+    if (st.sidebar.button("test",type="secondary")):
+        pg_test.app()
     if (st.sidebar.button("User Preferences",type="secondary")):
         pg_user_prefs.app()
     if (st.sidebar.button("Search Product",type="secondary")):

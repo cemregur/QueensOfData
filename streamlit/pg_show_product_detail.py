@@ -7,8 +7,8 @@ def show_Product_Detail(xproduct_code):
     if (df.shape[0] != 1):
         st.error("An error occured with the product code :" + str(xproduct_code))
     else:
-        col1, col2, col3 = st.columns(3)
-        col1.image(df["url"].values[0], caption='Product', use_column_width=True)
+        col1, col2 = st.columns((1,2))
+        col1.image(df["url"].values[0], caption='', use_column_width=True)
         col2.header(df["product_name_en"].values[0])
         col2.markdown("Code : " + str(df["code"].values[0]))
         col2.markdown("Ingredients : " + df["ingredients_text_en"].values[0])
