@@ -11,7 +11,7 @@ def on_less_click(show_more, idx):
 
 
 def app():
-    st.markdown("Developer Team : Cemre GÜR, Zeynep ATLI, Suzan YATAĞAN")
+    st.markdown("Developer Team : Cemre YİĞİT, Zeynep ATLI, Suzan YATAĞAN")
 
     if "show_more" not in st.session_state:
         st.session_state["show_more"] = dict.fromkeys([1, 2, 3], False)
