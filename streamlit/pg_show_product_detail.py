@@ -2,13 +2,14 @@ import streamlit as st
 import pandas as pd
 from Src.utils import *
 
+
 def show_Product_Detail(xproduct_code):
     df = get_product_detail_df(xproduct_code)
     if (df.shape[0] != 1):
         st.error("An error occured with the product code :" + str(xproduct_code))
     else:
-        col1, col2 = st.columns((1,2))
-        col1.image(df["url"].values[0], caption='', use_column_width=True)
+        col1, col2, col3 = st.columns(3)
+        col1.image(df["url"].values[0], caption='Product', use_column_width=True)
         col2.header(df["product_name_en"].values[0])
         col2.markdown("Code : " + str(df["code"].values[0]))
         col2.markdown("Ingredients : " + df["ingredients_text_en"].values[0])
@@ -23,8 +24,18 @@ def show_Product_Detail(xproduct_code):
         ########################################################################
         with st.container():
             col1 , col2, col3  = st.columns(3)
-            col1.success("Nutrition Score : " + df["off:nutriscore_grade"].values[0] )
-            col2.error('NOVA Score : ' + df["off:nova_groups"].values[0], icon="🚨")
+            #col1.success("Nutrition Score : " + df["off:nutriscore_grade"].values[0] )
+            nutrition_score = df["off:nutriscore_grade"].values[0]
+            if not pd.isna(nutrition_score):
+                col1.success("Nutrition Score : " + str(nutrition_score))
+            else:
+                col1.success("Nutrition Score : ")
+            #col2.error('NOVA Score : ' + df["off:nova_groups"].values[0], icon="🚨")
+            df["off:nova_groups"] = df["off:nova_groups"].astype(str)
+            nova_score = df["off:nova_groups"].values[0]
+            nova_score = nova_score.replace(',', '.')
+            nova_score = int(float(nova_score))
+            col2.error(f'NOVA Score : {nova_score}', icon="🚨")
             col3.success("Glisemic Score : " + str(df["GI_category"].values[0]))
         #######################################################################
         # ALLERGENS
