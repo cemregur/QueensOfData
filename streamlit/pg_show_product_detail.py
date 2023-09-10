@@ -36,7 +36,7 @@ def show_Product_Detail(xproduct_code):
             nova_score = nova_score.replace(',', '.')
             nova_score = int(float(nova_score))
             col2.error(f'NOVA Score : {nova_score}', icon="🚨")
-            col3.success("Glisemic Score : " + str(df["GI_category"].values[0]))
+            #col3.success("Glisemic Score : " + str(df["GI_category"].values[0]))
         #######################################################################
         # ALLERGENS
         ########################################################################
@@ -114,10 +114,10 @@ def get_product_detail_df(xproduct_code):
     df = pd.read_csv('Datasets/df.csv', sep=';', low_memory=False)
     df.loc[df["allergens"].isnull(), "allergens"] = ""
     df.loc[df["stores"].isnull(), "stores"] = ""
-    df["GI_category"] = 1
+    #df["GI_category"] = 1
 
     cols = ["code", "product_name_en", "brands", "off:nova_groups", "off:nutriscore_grade","allergens",
-            "ingredients_text_en", "stores","url","GI_category"]
+            "ingredients_text_en", "stores","url"]
     df_product = df.loc[df["code"].astype(str) == str(xproduct_code), cols]
     df_product_detail = check_allergens(df_product)
     return df_product_detail
