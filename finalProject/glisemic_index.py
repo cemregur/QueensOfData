@@ -1,10 +1,8 @@
 import pandas as pd
 import streamlit as st
-
 import food_fact_app
 
-df_ = pd.read_excel("/Users/cemregur/QueensOfData/finalProject/new_spagetti.xlsx")
-df = df_.copy()
+df = pd.read_csv("streamlit/Datasets/df.csv", low_memory=False)
 
 df.head()
 df.columns()
