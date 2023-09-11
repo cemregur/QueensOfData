@@ -2,13 +2,12 @@ import streamlit as st
 import pandas as pd
 from Src.utils import *
 
-
 def show_Product_Detail(xproduct_code):
     df = get_product_detail_df(xproduct_code)
     if (df.shape[0] != 1):
         st.error("An error occured with the product code :" + str(xproduct_code))
     else:
-        col1, col2 = st.columns((1, 2))
+        col1, col2 = st.columns((1,2))
         col1.image(df["url"].values[0], caption='', use_column_width=True)
         col2.header(df["product_name_en"].values[0])
         col2.markdown("Code : " + str(df["code"].values[0]))
@@ -23,10 +22,10 @@ def show_Product_Detail(xproduct_code):
         # SCORES
         ########################################################################
         with st.container():
-            col1, col2, col3 = st.columns(3)
-            col1.success("Nutrition Score : " + df["off:nutriscore_grade"].values[0])
+            col1 , col2, col3  = st.columns(3)
+            col1.success("Nutrition Score : " + df["off:nutriscore_grade"].values[0] )
             col2.error('NOVA Score : ' + df["off:nova_groups"].values[0], icon="🚨")
-            # col3.success("Glisemic Score : " + str(df["GI_category"].values[0]))
+            col3.success("Glisemic Score : " + str(df["GI_category"].values[0]))
         #######################################################################
         # ALLERGENS
         ########################################################################
@@ -40,7 +39,7 @@ def show_Product_Detail(xproduct_code):
         if Allergen_Count > 0:
             col_obj_list = st.columns(Allergen_Count)
             for i, col_object in enumerate(col_obj_list):
-                col_object.error(Allergen_Pozitives_list[i] + " POZITIVE ALARM", icon="🚨")
+                col_object.error(Allergen_Pozitives_list[i] + " POZITIVE ALARM" , icon="🚨" )
         if Allergen_Count == 0:
             # Allerjen bilgisi girilmedi
             if (df["Allergen_Milk"].values[0] == "2"):
@@ -48,8 +47,7 @@ def show_Product_Detail(xproduct_code):
                 for i, col_object in enumerate(col_obj_list):
                     col_object.info(Allergen_col_list[i] + " No Information")
 
-
-def check_allergens(df_product):
+def check_allergens(df_product ):
     if (df_product["allergens"].values[0] == ""):
         allergens = []
         df_product["Allergen_Milk"] = "2"
@@ -100,21 +98,18 @@ def check_allergens(df_product):
         if (chk) & ("Soybeans" in allergens):
             df_product["Allergen_Soybeans"] = "1"
         return df_product
-
-
 def get_product_detail_df(xproduct_code):
-    # df = read_food_data2()
-    df = pd.read_csv('streamlit/Datasets/df.csv', sep=';', low_memory=False)
+    #df = read_food_data2()
+    df = pd.read_csv('Datasets/df.csv', sep=';', low_memory=False)
     df.loc[df["allergens"].isnull(), "allergens"] = ""
     df.loc[df["stores"].isnull(), "stores"] = ""
     df["GI_category"] = 1
 
-    cols = ["code", "product_name_en", "brands", "off:nova_groups", "off:nutriscore_grade", "allergens",
-            "ingredients_text_en", "stores", "url"]
+    cols = ["code", "product_name_en", "brands", "off:nova_groups", "off:nutriscore_grade","allergens",
+            "ingredients_text_en", "stores","url","GI_category"]
     df_product = df.loc[df["code"].astype(str) == str(xproduct_code), cols]
     df_product_detail = check_allergens(df_product)
     return df_product_detail
-
 
 def app(xproduct_code):
     show_Product_Detail(xproduct_code)
