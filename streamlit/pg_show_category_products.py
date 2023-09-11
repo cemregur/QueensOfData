@@ -4,7 +4,7 @@ from Src.utils import *
 def get_category_product_list(xCategory):
     df = read_food_data()
         ##BAK
-    cols = ["code","product_name_en","brands","off:nova_groups","off:nutriscore_grade","GI_category","url"]
+    cols = ["code", "product_name_en", "brands", "off:nova_groups", "off:nutriscore_grade", "url"]
     df = df.loc[df["Category_new"] == xCategory, cols]
 
     return df

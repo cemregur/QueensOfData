@@ -7,7 +7,7 @@ from Src.utils import *
 def app():
     st.write("test page")
     df = read_food_data()
-    cols = ["code","product_name_en","brands","off:nova_groups","off:nutriscore_grade","GI_category","url"]
+    cols = ["code", "product_name_en", "brands", "off:nova_groups", "off:nutriscore_grade", "url"]
     df = df.loc[df["Category_new"] == "Pasta", cols]
     grd = GridOptionsBuilder.from_dataframe(df)
     grd.configure_pagination(enabled=True)

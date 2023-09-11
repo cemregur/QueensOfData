@@ -26,7 +26,7 @@ def main():
         pg_search_product.app()
 
     category_df = read_categories_data()
-    ## category_df = pd.read_csv('Datasets/df_cat.csv', sep=';', low_memory=False)
+    category_df = pd.read_csv('streamlit/Datasets/df_cat.csv', sep=';', low_memory=False)
     buttons = []
     category_list = category_df["Name"].values
     for col in category_list:
