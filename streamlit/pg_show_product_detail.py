@@ -123,6 +123,8 @@ def check_allergens(df_product):
                 chk = False
         if (chk) & ("Egg" in allergens):
             df_product["Allergen_Egg"] = "1"
+        if (chk) & ("Eggs" in allergens):
+            df_product["Allergen_Egg"] = "1"
         df_product["Allergen_Nut"] = "0"
         if ("pref_Allergen_Nut" in st.session_state):
             if (st.session_state.pref_Allergen_Nut == 0):
