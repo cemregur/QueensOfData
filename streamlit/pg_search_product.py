@@ -7,7 +7,6 @@ from Src.utils import *
 def search_product():
     search_text = st.session_state.txt_search
     df = read_food_data()
-    ##BAK hangi sütunlar çekilecekse loca liste gönderilmeli.
     cols = ["code", "product_name_en", "brands", "off:nova_groups", "off:nutriscore_grade", "url"]
     result_df = df.loc[(df["product_name_en"].str.contains(search_text)) |
                        (df["code"].astype(str).str.contains(search_text)), cols]
@@ -44,11 +43,10 @@ def oneri_bul(product_code):
                 ~oneriler["allergens"].apply(lambda x: any(allergen in x for allergen in selected_allergens))]
 
         if not oneriler.empty:
-            st.markdown('## Product you might be interested in :mag:')
-            recommendations_df = oneriler[["code","product_name_en", "off:nova_groups", "off:nutriscore_grade", "allergens"]]
-
-
-            st.table(recommendations_df)
+            st.markdown('## Products you might be interested in :mag:')
+            cols = ["code", "product_name_en", "brands", "off:nova_groups", "off:nutriscore_grade", "url", "allergens"]
+            recommendations_df = oneriler[cols]
+            pg_show_category_products.show_product_list(recommendations_df)
         else:
             st.warning('No suitable recommendation found.😔')
     #else:

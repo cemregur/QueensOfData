@@ -41,14 +41,16 @@ def show_Product_Detail(xproduct_code):
                 col1.error("**NUTRITION SCORE** : E", icon="🚨")
             else:
                 col1.success(f"**NUTRITION SCORE** : " + df["off:nutriscore_grade"].values[0])
-
+            df["off:nova_groups"] = df["off:nova_groups"].astype(str)
             if pd.isna(df["off:nova_groups"].values[0]):
                 col2.error("**NOVA SCORE** : No Information")
             elif df["off:nova_groups"].values[0] == "4":
                 col2.error("**NOVA SCORE** : 4", icon="🚨")
             else:
-                col2.success("**NOVA SCORE** : " + df["off:nova_groups"].values[0])
-            # col3.success("Glisemic Score : " + str(df["GI_category"].values[0]))
+                nova_score = df["off:nova_groups"].values[0]
+                nova_score = nova_score.replace(',', '.')
+                nova_score = int(float(nova_score))
+                col2.success(f"**NOVA SCORE** : {nova_score}")
         #######################################################################
         # ALLERGENS
         ########################################################################
@@ -61,7 +63,6 @@ def show_Product_Detail(xproduct_code):
             "Allergen_Gluten": "🌾",
             "Allergen_Soybeans": "🌱"
         }
-
         allergen_expressions = {
             "Allergen_Milk": "Contains Milk",
             "Allergen_Egg": "Contains Egg",
@@ -70,7 +71,6 @@ def show_Product_Detail(xproduct_code):
             "Allergen_Gluten": "Contains Gluten",
             "Allergen_Soybeans": "Contains Soybeans"
         }
-
         Allergen_Count = 0
         Allergen_Pozitives_list = []
         Allergen_col_list = [col for col in df.columns if "Allergen" in col]
@@ -89,7 +89,6 @@ def show_Product_Detail(xproduct_code):
             # Allerjen seçimi yapıldı ama allergens alanı boş
         if Allergen_Count == 0 and df["Allergen_Milk"].values[0] == "2":
             st.info("NO ALLERGEN INFORMATION")
-
 
 def check_allergens(df_product):
     if (df_product["allergens"].values[0] == ""):
@@ -150,7 +149,6 @@ def check_allergens(df_product):
         if (chk) & ("Soybean" in allergens):
             df_product["Allergen_Soybeans"] = "1"
         return df_product
-
 
 def get_product_detail_df(xproduct_code):
     df = read_food_data2()
