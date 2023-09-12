@@ -1,5 +1,14 @@
 import streamlit as st
-
+from PIL import Image
 def app():
-    st.write(
-        "Safe Food for All is a platform that provides consumers with information about food safety, such as product ingredients and allergens. This website may be used as a tool to promote food safety practices, increase consumer awareness, and encourage healthy eating habits. Our platform aims to help consumers make more informed decisions about food products and encourage them to make safer choices.")
+    st.markdown("- 🍽️ Provides consumers with information about food safety, such as product ingredients and allergens.")
+    st.markdown("- :dart: Aims to promote food safety practices and increase consumer awareness.")
+    st.markdown("- 🥗 Encourages healthy eating habits and helps consumers make informed decisions about food products.")
+    st.markdown("- 💪 Empowers you to make safer choices in your product selection journey.")
+    #image_url = "https://www.foodsafetynews.com/files/2020/06/Food-Safety-Hero-963x546.png"
+    image_url = Image.open("Datasets/resim2.png")
+    st.image(image_url, width=450)
+
+
+if __name__ == "__main__":
+    app()
